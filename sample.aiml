@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml version="1.0">
+<meta name="language" content="en"/>
+
+	<category>
+    		<pattern>HELLO *</pattern>
+   			 <template>
+				<random>
+	   				 <li>Hello there!</li>
+					 <li>Hey</li>
+				</random>
+			</template>
+	</category>
+	<category>
+    		<pattern>WHO ARE YOU</pattern>
+    		<template>I am Jarvis!</template>
+	</category>
+	<category>
+		<pattern>MY DOG NAME IS *</pattern>
+		<template>That is interesting that you have a dog named <set name="dog"><star/></set></template>  
+  	</category> 
+   	<category>
+      		<pattern>WHAT IS MY DOG NAME</pattern>
+		<template>Your dog's name is <get name="dog"/>.</template>  
+  	</category>  
+
+</aiml>
