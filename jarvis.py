@@ -13,14 +13,14 @@ kernel = aiml.Kernel()
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 # print(voices[1].id)
-engine.setProperty('voice', voices[0].id)
+engine.setProperty('voice', voices[1].id)
 terminate = ['bye', 'buy', 'shutdown', 'exit', 'quit', 'gotosleep', 'goodbye']
 
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
-def wishMe():
+def wishMe(s):
     hour = int(datetime.datetime.now().hour)
     if hour>=0 and hour<12:
         speak("Good Morning!")
@@ -29,10 +29,9 @@ def wishMe():
         speak("Good Afternoon!")
 
     else:
-        speak("Good Evening!")
-
+        speak("Good Evening!",)
+    speak(s)
     speak("I am Jarvis. Please tell me how may I help you?")
-
 
 def takeCommand(i):
     #It takes microphone input from the user and returns string output
@@ -40,9 +39,9 @@ def takeCommand(i):
     with sr.Microphone() as source:
         r.pause_threshold = 1
         try:
-            audio = r.listen(source,timeout=5)
+            audio = r.listen(source,timeout=10)
         except:
-            if(i>=2):
+            if(i>=3):
                 s="You appear to be working sir, Call me when required!"
                 print(s)
                 speak(s)
@@ -53,39 +52,38 @@ def takeCommand(i):
         print("Recognizing...")
         query = r.recognize_google(audio, language='en-in')
         print(f"User said: {query}\n")
+        return query
 
     except Exception as e:
-        # print(e)
-        print("Say that again please...")
-        return "None"
+        print("Sorry, can you say that again please...\nListening...")
         i+=1
-    return query
+        takeCommand(i)
 
 if __name__ == "__main__":
-    wishMe()
     i=0
+    s="Please enter your username"
+    print(s)
+    speak(s)
+    print("Listening...")
+    #sessionid='abhi'
+    sessionid=takeCommand(0)
+    wishMe(sessionid)
     while True:
+    #if(1):
         print("Listening...")
         query = takeCommand(i).lower()
+        #query='open msedge'
+        if 'visit' in query:
+            s=query.split()
+            msedge.open(s[s.index("visit")+1]+'.com')
 
-        # Logic for executing tasks based on query
-        if 'wikipedia' in query:
+        elif 'wikipedia' in query:
             speak('Searching Wikipedia...')
             query = query.replace("wikipedia", "")
             results = wikipedia.summary(query, sentences=2)
             speak("According to Wikipedia")
             print(results)
             speak(results)
-
-
-        elif 'open youtube' in query:
-            webbrowser.open("youtube.com")
-
-        elif 'open google' in query:
-            webbrowser.open("google.com")
-
-        elif 'open stackoverflow' in query:
-            webbrowser.open("stackoverflow.com")
 
         elif 'play music' in query:
             music_dir = 'D:\\Non Critical\\songs\\Favorite Songs2'
@@ -108,14 +106,19 @@ if __name__ == "__main__":
             exit(0)
 
         else:
-            if os.path.isfile("brain.dump"):
+            if os.path.isfile("brain.brn"):
                 #print("i have learnt")
-                kernel.loadBrain("brain.dump")
+                kernel.bootstrap(brainFile='brain.brn')
+                kernel.loadBrain("brain.brn")
             else:
                 kernel.bootstrap(learnFiles = "startup.aiml", commands = "load aiml b")
-                kernel.saveBrain("brain.dump")
+                kernel.saveBrain("brain.brn")
                 #print("i am learning")
             #kernel.learn("sample.aiml")
+            kernel.saveBrain("brain.brn")
+            kernel.setPredicate("site",'google')
+            site=kernel.getPredicate("site")
+            #print(site)
             response = kernel.respond(query)
             print(response)
             speak(response)
