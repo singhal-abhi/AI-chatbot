@@ -10,24 +10,51 @@
 					</random>
 				</template>
 		</category>
+
 		<category>
 	    		<pattern>WHO ARE YOU</pattern>
-	    		<template>I am Jarvis!</template>
+	    		<template>I am ISAC!</template>
 		</category>
+
+		<category>
+	    		<pattern>WHAT ARE YOU</pattern>
+	    		<template>I am a simple, intelligent assistant and chatbot. </template>
+		</category>
+
 		<category>
 			<pattern>MY DOG NAME IS *</pattern>
 			<template>That is interesting that you have a dog named <set name="dog"><star/></set></template>
 	  </category>
+
 	  <category>
 	      		<pattern>WHAT IS MY DOG NAME</pattern>
 						<template>Your dog's name is <get name="dog"/>.</template>
 	  </category>
+
 		<category>
 			<pattern>OPEN *</pattern>
     	<template>
              Opening <star/>
             <system> start <star/> </system>
     	</template>
-			</category>
+		</category>
+
+		<category>
+        <pattern>BATTERY LEVEL</pattern>
+        <template>
+            battery <system>WMIC PATH Win32_Battery Get EstimatedChargeRemaining</system>
+        </template>
+    </category>
+
+		<category>
+    	<pattern>*</pattern>
+    	<template>
+        <random>
+           <li>I am sorry, I don't quite understand</li>
+           <li>I don't understand that yet. Maybe you could teach me.</li>
+           <li>I don't know how to answer that. Maybe I could interest you in something else.</li>
+        </random>
+    	</template>
+    </category>
 
 </aiml>

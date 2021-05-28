@@ -1,20 +1,27 @@
-import pyttsx3 #pip install pyttsx3
-import speech_recognition as sr #pip install speechRecognition
+import pyttsx3
+import speech_recognition as sr
 import datetime
-import wikipedia #pip install wikipedia
+import wikipedia
 import webbrowser
 import os
 import smtplib
 import pyaudio
-import aiml
+import aiml,urllib as ul
 
 
 kernel = aiml.Kernel()
+
+#voice initialization
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
-# print(voices[1].id)
 engine.setProperty('voice', voices[1].id)
+
+#keywords to terminate
 terminate = ['bye', 'buy', 'shutdown', 'exit', 'quit', 'gotosleep', 'goodbye']
+
+#web browser initialization
+edgepath="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+webbrowser.register('edge',None,webbrowser.BackgroundBrowser(edgepath))
 
 def speak(audio):
     engine.say(audio)
@@ -31,15 +38,14 @@ def wishMe(s):
     else:
         speak("Good Evening!",)
     speak(s)
-    speak("I am Jarvis. Please tell me how may I help you?")
+    speak("I am ISAC. Please tell me how may I help you?")
 
 def takeCommand(i):
-    #It takes microphone input from the user and returns string output
     r = sr.Recognizer()
     with sr.Microphone() as source:
         r.pause_threshold = 1
         try:
-            audio = r.listen(source,timeout=10)
+            audio = r.listen(source,timeout=8)
         except:
             if(i>=3):
                 s="You appear to be working sir, Call me when required!"
@@ -59,23 +65,27 @@ def takeCommand(i):
         i+=1
         takeCommand(i)
 
+edgepath="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+webbrowser.register('edge',None,webbrowser.BackgroundBrowser(edgepath))
+
 if __name__ == "__main__":
     i=0
     s="Please enter your username"
     print(s)
     speak(s)
     print("Listening...")
-    #sessionid='abhi'
-    sessionid=takeCommand(0)
+    sessionid='abhi'
+    #sessionid=takeCommand(0)
     wishMe(sessionid)
-    while True:
-    #if(1):
+    #while True:
+    if(1):
         print("Listening...")
-        query = takeCommand(i).lower()
-        #query='open msedge'
-        if 'visit' in query:
+        #query = takeCommand(0).lower()
+        query='nkjnono'
+        if 'visit' in query or "take me to" in query:
             s=query.split()
-            msedge.open(s[s.index("visit")+1]+'.com')
+            s='https://www.'+s[-1]+'.com'
+            webbrowser.get('edge').open(s)
 
         elif 'wikipedia' in query:
             speak('Searching Wikipedia...')
@@ -106,19 +116,12 @@ if __name__ == "__main__":
             exit(0)
 
         else:
-            if os.path.isfile("brain.brn"):
-                #print("i have learnt")
-                kernel.bootstrap(brainFile='brain.brn')
-                kernel.loadBrain("brain.brn")
+            if os.path.isfile("brain.dump"):
+                kernel.bootstrap("brain.dump")
             else:
                 kernel.bootstrap(learnFiles = "startup.aiml", commands = "load aiml b")
-                kernel.saveBrain("brain.brn")
-                #print("i am learning")
-            #kernel.learn("sample.aiml")
-            kernel.saveBrain("brain.brn")
-            kernel.setPredicate("site",'google')
-            site=kernel.getPredicate("site")
-            #print(site)
+                kernel.saveBrain("brain.dump")
+            kernel.learn("sample.aiml")
             response = kernel.respond(query)
             print(response)
             speak(response)
