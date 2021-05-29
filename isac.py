@@ -3,7 +3,7 @@ import speech_recognition as sr
 import datetime
 import wikipedia
 import webbrowser
-import os
+import os,re
 import smtplib
 import pyaudio
 import aiml,urllib as ul
@@ -65,6 +65,13 @@ def takeCommand(i):
         i+=1
         takeCommand(i)
 
+def music(s):
+    html = ul.request.urlopen("https://www.youtube.com/results?search_query=" + query)
+    video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
+    print("Taking you to")
+    print("https://www.youtube.com/watch?v=" + video_ids[0])
+    webbrowser.get('edge').open("https://www.youtube.com/watch?v=" + video_ids[0])
+
 edgepath="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 webbrowser.register('edge',None,webbrowser.BackgroundBrowser(edgepath))
 
@@ -74,14 +81,14 @@ if __name__ == "__main__":
     print(s)
     speak(s)
     print("Listening...")
-    sessionid='abhi'
-    #sessionid=takeCommand(0)
+    #sessionid='abhi'
+    sessionid=takeCommand(0)
     wishMe(sessionid)
-    #while True:
-    if(1):
+    while True:
+    #if(1):
         print("Listening...")
-        #query = takeCommand(0).lower()
-        query='nkjnono'
+        query = takeCommand(0).lower()
+        #query='play x'
         if 'visit' in query or "take me to" in query:
             s=query.split()
             s='https://www.'+s[-1]+'.com'
@@ -95,19 +102,15 @@ if __name__ == "__main__":
             print(results)
             speak(results)
 
-        elif 'play music' in query:
-            music_dir = 'D:\\Non Critical\\songs\\Favorite Songs2'
-            songs = os.listdir(music_dir)
-            print(songs)
-            os.startfile(os.path.join(music_dir, songs[0]))
+        elif 'play' in query:
+            query=query.split()[1:]
+            query="+".join(query)
+            music(query)
 
         elif 'time' in query:
             strTime = datetime.datetime.now().strftime("%H:%M:%S")
             speak(f"Sir, the time is {strTime}")
 
-        elif 'open file' in query:
-            codePath ="C:\\Windows\\explorer"
-            os.startfile(codePath)
 
         elif any([i for i in terminate if i in query]):
             s="Bbye Sir!, Have a nice day."

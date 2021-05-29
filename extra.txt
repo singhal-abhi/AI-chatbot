@@ -1,0 +1,17 @@
+'open file' in query:
+        codePath ="C:\\Windows\\explorer"
+        os.startfile(codePath)
+
+<category>
+      <pattern>MY DOG NAME IS *</pattern>
+      <template>That is interesting that you have a dog named <set name="dog"><star/></set></template>
+</category>
+
+<category>
+      <pattern>WHAT IS MY DOG NAME</pattern>
+      <template>Your dog's name is <get name="dog"/>.</template>
+</category>
+
+edgepath="C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+webbrowser.register('edge',None,webbrowser.BackgroundBrowser(edgepath))
+webbrowser.get('edge').open(**link**)

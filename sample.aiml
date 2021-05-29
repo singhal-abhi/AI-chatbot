@@ -22,16 +22,6 @@
 		</category>
 
 		<category>
-			<pattern>MY DOG NAME IS *</pattern>
-			<template>That is interesting that you have a dog named <set name="dog"><star/></set></template>
-	  </category>
-
-	  <category>
-	      		<pattern>WHAT IS MY DOG NAME</pattern>
-						<template>Your dog's name is <get name="dog"/>.</template>
-	  </category>
-
-		<category>
 			<pattern>OPEN *</pattern>
     	<template>
              Opening <star/>
