@@ -1,0 +1,10 @@
+The header files required for the project are as follows:
+
+pyttsx3 - for chatbot voice
+speech_recognition - for recognizing user queries
+datetime - for accessing date and time
+wikipedia - for accessing wikipedia summaries
+webbrowser - to open web sites
+os - to access files in the computer
+aiml - to use Aiml files accessed
+urllib - to scrape a website

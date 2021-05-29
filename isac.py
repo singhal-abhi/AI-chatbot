@@ -4,8 +4,8 @@ import datetime
 import wikipedia
 import webbrowser
 import os,re
-import smtplib
-import pyaudio
+#import smtplib
+#import pyaudio
 import aiml,urllib as ul
 
 
