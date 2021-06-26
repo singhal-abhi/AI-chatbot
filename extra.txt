@@ -1,3 +1,4 @@
+""" This file incudes features and ways excluded """"
 'open file' in query:
         codePath ="C:\\Windows\\explorer"
         os.startfile(codePath)
